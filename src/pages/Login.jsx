@@ -3,12 +3,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { validateEmail, validatePassword } from '../services/validateData';
-import { disableLoginBtn, saveUser } from '../redux/actions';
+import { saveUser } from '../redux/actions';
 
 class Login extends React.Component {
   state = {
     email: '',
     password: '',
+    disableBtn: true,
   };
 
   handleChange = ({ target: { value, name } }) => {
@@ -19,11 +20,10 @@ class Login extends React.Component {
 
   validateFields = () => {
     const { email, password } = this.state;
-    const { dispatch } = this.props;
     if (validateEmail(email) && validatePassword(password)) {
-      dispatch(disableLoginBtn(false));
+      this.setState({ disableBtn: false });
     } else {
-      dispatch(disableLoginBtn(true));
+      this.setState({ disableBtn: true });
     }
   };
 
@@ -35,7 +35,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const { disableBtn } = this.props;
+    const { disableBtn } = this.state;
     return (
       <main>
         <div>
@@ -67,7 +67,6 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  disableBtn: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
