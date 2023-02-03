@@ -7,8 +7,8 @@ class WalletForm extends Component {
   state = {
     value: '',
     currency: 'USD',
-    method: 'dinheiro',
-    tag: 'alimentação',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
     description: '',
   };
 
