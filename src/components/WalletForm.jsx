@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { editiExpense } from '../redux/actions';
 import { getCurrencies, getCurrenciesWithRates } from '../redux/actions/thunkActions';
 
 class WalletForm extends Component {
@@ -23,7 +24,7 @@ class WalletForm extends Component {
     });
   };
 
-  handleClick = () => {
+  saveExpense = () => {
     const { dispatch } = this.props;
     dispatch(getCurrenciesWithRates({ ...this.state }));
     this.setState({
@@ -32,8 +33,25 @@ class WalletForm extends Component {
     });
   };
 
+  editExpense = (id) => {
+    const { expenses, dispatch } = this.props;
+    const expense = expenses.find((el) => el.id === id);
+    const editedExpense = {
+      ...expense,
+      ...this.state,
+    };
+    dispatch(editiExpense({ id, editedExpense }));
+    this.setState({
+      value: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      description: '',
+    });
+  };
+
   render() {
-    const { currencies } = this.props;
+    const { currencies, editor, idToEdit } = this.props;
     const { value, description } = this.state;
     return (
       <form>
@@ -86,12 +104,23 @@ class WalletForm extends Component {
           <option value="Transporte">Transporte</option>
           <option value="Saúde">Saúde</option>
         </select>
-        <button
-          type="button"
-          onClick={ this.handleClick }
-        >
-          Adicionar despesa
-        </button>
+        {
+          editor ? (
+            <button
+              type="button"
+              onClick={ () => this.editExpense(idToEdit) }
+            >
+              Editar despesa
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={ () => this.saveExpense() }
+            >
+              Adicionar despesa
+            </button>
+          )
+        }
       </form>
     );
   }
@@ -102,6 +131,11 @@ WalletForm.propTypes = {
     map: PropTypes.func.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
+  editor: PropTypes.bool.isRequired,
+  expenses: PropTypes.shape({
+    find: PropTypes.func,
+  }).isRequired,
+  idToEdit: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
