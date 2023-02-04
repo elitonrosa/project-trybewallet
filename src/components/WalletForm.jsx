@@ -78,7 +78,7 @@ class WalletForm extends Component {
         >
           {
             currencies.map((el, index) => (
-              <option key={ index } value={ el }>{el}</option>
+              <option key={ index } value={ el } data-testid="options-await">{el}</option>
             ))
           }
         </select>
