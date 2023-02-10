@@ -4,14 +4,16 @@ import { connect } from 'react-redux';
 import { editiExpense, formFilled } from '../redux/actions';
 import { getCurrencies, getCurrenciesWithRates } from '../redux/actions/thunkActions';
 
+const DEFAULT_LOCAL_STATE = {
+  value: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
+  description: '',
+};
+
 class WalletForm extends Component {
-  state = {
-    value: '',
-    currency: 'USD',
-    method: 'Dinheiro',
-    tag: 'Alimentação',
-    description: '',
-  };
+  state = { ...DEFAULT_LOCAL_STATE };
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -32,10 +34,7 @@ class WalletForm extends Component {
   saveExpense = () => {
     const { dispatch } = this.props;
     dispatch(getCurrenciesWithRates({ ...this.state }));
-    this.setState({
-      value: '',
-      description: '',
-    });
+    this.setState({ ...DEFAULT_LOCAL_STATE });
   };
 
   editExpense = (id) => {
@@ -46,13 +45,7 @@ class WalletForm extends Component {
       ...this.state,
     };
     dispatch(editiExpense({ id, editedExpense }));
-    this.setState({
-      value: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-      description: '',
-    });
+    this.setState({ ...DEFAULT_LOCAL_STATE });
   };
 
   fillTheForm = () => {
@@ -70,7 +63,7 @@ class WalletForm extends Component {
 
   render() {
     const { currencies, editor, idToEdit } = this.props;
-    const { value, description } = this.state;
+    const { value, currency, method, tag, description } = this.state;
     return (
       <form>
         <input
@@ -93,6 +86,7 @@ class WalletForm extends Component {
           data-testid="currency-input"
           defaultValue="USD"
           onChange={ this.handleChange }
+          value={ currency }
         >
           {
             currencies.map((el, index) => (
@@ -105,6 +99,7 @@ class WalletForm extends Component {
           data-testid="method-input"
           defaultValue="dinheiro"
           onChange={ this.handleChange }
+          value={ method }
         >
           <option value="Dinheiro">Dinheiro</option>
           <option value="Cartão de crédito">Cartão de crédito</option>
@@ -115,6 +110,7 @@ class WalletForm extends Component {
           data-testid="tag-input"
           defaultValue="alimentação"
           onChange={ this.handleChange }
+          value={ tag }
         >
           <option value="Alimentação">Alimentação</option>
           <option value="Lazer">Lazer</option>
