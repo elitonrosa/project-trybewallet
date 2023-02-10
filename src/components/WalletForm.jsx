@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editiExpense } from '../redux/actions';
+import { editiExpense, formFilled } from '../redux/actions';
 import { getCurrencies, getCurrenciesWithRates } from '../redux/actions/thunkActions';
 
 class WalletForm extends Component {
@@ -16,6 +16,11 @@ class WalletForm extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(getCurrencies());
+  }
+
+  componentDidUpdate() {
+    const { fillForm } = this.props;
+    if (fillForm) { this.fillTheForm(); }
   }
 
   handleChange = ({ target: { value, name } }) => {
@@ -48,6 +53,19 @@ class WalletForm extends Component {
       tag: 'Alimentação',
       description: '',
     });
+  };
+
+  fillTheForm = () => {
+    const { expenses, idToEdit, dispatch } = this.props;
+    const expense = expenses.find((el) => el.id === idToEdit);
+    const { value, currency, method, tag, description } = expense;
+    this.setState({
+      value,
+      currency,
+      method,
+      tag,
+      description,
+    }, () => dispatch(formFilled()));
   };
 
   render() {
@@ -127,14 +145,11 @@ class WalletForm extends Component {
 }
 
 WalletForm.propTypes = {
-  currencies: PropTypes.shape({
-    map: PropTypes.func.isRequired,
-  }).isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   dispatch: PropTypes.func.isRequired,
   editor: PropTypes.bool.isRequired,
-  expenses: PropTypes.shape({
-    find: PropTypes.func,
-  }).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+  fillForm: PropTypes.bool.isRequired,
   idToEdit: PropTypes.number.isRequired,
 };
 

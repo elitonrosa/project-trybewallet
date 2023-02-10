@@ -4,6 +4,7 @@ import {
   DELETE_EXPENSE,
   EDITING_EXPENSE,
   EDIT_EXPENSE,
+  FORM_FILLED,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -11,6 +12,7 @@ const INITIAL_STATE = {
   expenses: [],
   editor: false,
   idToEdit: 0,
+  fillForm: false,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -35,7 +37,13 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       editor: true,
+      fillForm: true,
       idToEdit: action.payload,
+    };
+  case FORM_FILLED:
+    return {
+      ...state,
+      fillForm: false,
     };
   case EDIT_EXPENSE:
     return {

@@ -20,15 +20,17 @@ class Header extends Component {
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
-  expenses: PropTypes.shape({
-    id: PropTypes.number,
-    value: PropTypes.string,
-    description: PropTypes.string,
-    currency: PropTypes.string,
-    method: PropTypes.string,
-    tag: PropTypes.string,
-    exchangeRates: PropTypes.shape({}).isRequired,
-  }).isRequired,
+  expenses: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      value: PropTypes.string,
+      description: PropTypes.string,
+      currency: PropTypes.string,
+      method: PropTypes.string,
+      tag: PropTypes.string,
+      exchangeRates: PropTypes.shape({}).isRequired,
+    }).isRequired,
+  ).isRequired,
 };
 
 const mapStateToProps = (state) => ({

@@ -55,7 +55,7 @@ class Table extends Component {
                       <button
                         type="button"
                         data-testid="edit-btn"
-                        onClick={ () => dispatch(editingExpense(id)) }
+                        onClick={ () => dispatch(editingExpense(id, expense)) }
                       >
                         Editar
                       </button>
@@ -73,9 +73,9 @@ class Table extends Component {
 
 Table.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  expenses: PropTypes.shape({
-    map: PropTypes.func.isRequired,
-  }).isRequired,
+  expenses: PropTypes.arrayOf(
+    PropTypes.shape({}).isRequired,
+  ).isRequired,
 };
 
 const mapStateToProps = (state) => ({

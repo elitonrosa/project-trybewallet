@@ -4,6 +4,7 @@ export const SAVE_EXPENSES = 'SAVE_EXPENSES';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 export const EDITING_EXPENSE = 'EDITING_EXPENSE';
 export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const FORM_FILLED = 'FORM_FILLED';
 
 export const saveUser = (userEmail) => ({
   type: SAVE_USER,
@@ -28,6 +29,10 @@ export const deleteExpense = (id) => ({
 export const editingExpense = (id) => ({
   type: EDITING_EXPENSE,
   payload: id,
+});
+
+export const formFilled = () => ({
+  type: FORM_FILLED,
 });
 
 export const editiExpense = (obj) => ({
